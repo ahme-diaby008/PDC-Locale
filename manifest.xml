@@ -22,7 +22,7 @@
 
   <!-- La page HTML qui se charge dans le volet Office -->
   <DefaultSettings>
-    <SourceLocation DefaultValue="pdc-locale.netlify.app"/>
+    <SourceLocation DefaultValue="https://product-data-collect.netlify.app/"/>
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
