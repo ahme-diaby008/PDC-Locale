@@ -1,41 +1,42 @@
 # ------------------------------------------------------------
-# INSTALLATION D’UN COMPLÉMENT OFFICE VIA MANIFEST WEF
-# Auteur : Diaby Ahme
+# INSTALLATION AUTOMATIQUE DU COMPLÉMENT OFFICE PDC
 # ------------------------------------------------------------
 
-Write-Host "Installation du complément Office..." -ForegroundColor Cyan
+Write-Host "Installation du complément Office PDC..." -ForegroundColor Cyan
 
-# 1. Chemin du manifeste à installer
-$ManifestPath = "C:\Chemin\vers\ton\manifest.xml"   # <-- mets ton chemin ici
+# 1. URL RAW GitHub du manifest
+$ManifestUrl = "https://raw.githubusercontent.com/ahme-diaby008/PDC-Locale/refs/heads/main/manifest.xml"
 
-if (-Not (Test-Path $ManifestPath)) {
-    Write-Host "❌ Le fichier manifest.xml est introuvable." -ForegroundColor Red
-    exit
-}
+# 2. Fichier temporaire
+$TempManifest = "$env:TEMP\manifest.xml"
 
-# 2. Dossier WEF (sideload stable, sans debug)
+# 3. Télécharger le manifest
+Write-Host "Téléchargement du manifest depuis GitHub..." -ForegroundColor Yellow
+Invoke-WebRequest -Uri $ManifestUrl -OutFile $TempManifest -UseBasicParsing
+
+# 4. Dossier WEF pour sideload stable
 $WefFolder = "$env:LOCALAPPDATA\Microsoft\Office\Wef"
 
-# 3. Création du dossier si manquant
+# Créer le dossier si nécessaire
 if (-Not (Test-Path $WefFolder)) {
     Write-Host "Création du dossier WEF..." -ForegroundColor Yellow
     New-Item -ItemType Directory -Path $WefFolder | Out-Null
 }
 
-# 4. Copier le manifeste dans WEF
-Write-Host "Copie du manifeste dans : $WefFolder" -ForegroundColor Cyan
-Copy-Item -Path $ManifestPath -Destination $WefFolder -Force
+# 5. Installer le manifest dans WEF
+Write-Host "Installation du manifest dans : $WefFolder" -ForegroundColor Cyan
+Copy-Item -Path $TempManifest -Destination "$WefFolder\manifest.xml" -Force
 
-# 5. Nettoyer potentiels fichiers en cache
-Write-Host "Nettoyage du cache de sideload..." -ForegroundColor Yellow
+# 6. Purger le cache Office
 $CacheFolder = "$env:LOCALAPPDATA\Microsoft\Office\16.0\Wef\Cache"
 if (Test-Path $CacheFolder) {
+    Write-Host "Nettoyage du cache Office..." -ForegroundColor Yellow
     Remove-Item -Recurse -Force $CacheFolder
 }
 
-# 6. Redémarrage des applications Office
+# 7. Redémarrer les applications Office
 Write-Host "Fermeture des applications Office..." -ForegroundColor Yellow
-Get-Process excel,winword,powerpnt -ErrorAction SilentlyContinue | Stop-Process -Force
+Get-Process excel, winword, powerpnt -ErrorAction SilentlyContinue | Stop-Process -Force
 
-Write-Host "✅ Installation terminée !" -ForegroundColor Green
-Write-Host "➡ Vous pouvez maintenant relancer Excel / Word." -ForegroundColor Green
+Write-Host "✅ Installation terminée !"
+Write-Host "➡️ Vous pouvez maintenant relancer Excel." -ForegroundColor Green
