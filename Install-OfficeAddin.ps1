@@ -15,7 +15,7 @@ Write-Host "Téléchargement du manifest depuis GitHub..." -ForegroundColor Yell
 Invoke-WebRequest -Uri $ManifestUrl -OutFile $TempManifest -UseBasicParsing
 
 # 4. Dossier WEF pour sideload stable
-$WefFolder = "$env:LOCALAPPDATA\Microsoft\Office\Wef"
+$WefFolder = "$env:LOCALAPPDATA\Microsoft\Office\16.0\Wef"
 
 # Créer le dossier si nécessaire
 if (-Not (Test-Path $WefFolder)) {
