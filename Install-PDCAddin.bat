@@ -1,33 +1,38 @@
 @echo off
-REM ============================================
-REM  Installateur PDC - Batch minimal et robuste
-REM ============================================
+setlocal
 
-REM 1) URL du script PowerShell heberge sur GitHub RAW
-set "PS_URL=https://raw.githubusercontent.com/ahme-diaby008/PDC-Locale/refs/heads/main/Install-OfficeAddin.ps1"
+echo ============================================
+echo  Installation du complement PDC (sans admin)
+echo ============================================
 
-REM 2) Chemin Powershell (Windows PowerShell)
 set "PS_EXE=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
+set "PS_URL=https://raw.githubusercontent.com/ahme-diaby008/PDC-Locale/refs/heads/main/manifest.xml"
+set "PS_TMP=%TEMP%\manifest.xml"
+set "WEF=%LOCALAPPDATA%\Microsoft\Office\16.0\Wef"
 
-REM 3) Fichier temporaire pour le script
-set "PS_FILE=%TEMP%\Install-OfficeAddin.ps1"
-
-echo Downloading installer script...
-
-"%PS_EXE%" -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%PS_URL%' -OutFile '%PS_FILE%' -UseBasicParsing } catch { Write-Host ('Download failed: ' + $_.Exception.Message); exit 1 }"
-
-IF NOT EXIST "%PS_FILE%" (
-  echo Failed to download the installer. Check Internet/proxy/URL.
+echo Telechargement du manifest...
+"%PS_EXE%" -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%PS_URL%' -OutFile '%PS_TMP%' -UseBasicParsing" || (
+  echo Echec du telechargement. Verifiez l'acces Internet/proxy.
   pause
   exit /b 1
 )
 
-echo Running installer...
-"%PS_EXE%" -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%PS_FILE%"
+if not exist "%WEF%" mkdir "%WEF%"
+
+echo Nettoyage du cache WEF...
+if exist "%WEF%\Cache" rmdir /s /q "%WEF%\Cache"
+
+echo Fermeture d'Excel/Word/PowerPoint s'ils sont ouverts...
+taskkill /f /im excel.exe >nul 2>&1
+taskkill /f /im winword.exe >nul 2>&1
+taskkill /f /im powerpnt.exe >nul 2>&1
+
+echo Installation du manifest...
+copy /y "%PS_TMP%" "%WEF%\manifest.xml" >nul
 
 echo.
-echo =========== DONE ===========
-echo You can now open Excel.
-echo ============================
-echo.
+echo ============================================
+echo  ✔ Installation terminee. Ouvrez Excel.
+echo ============================================
 pause
+endlocal
