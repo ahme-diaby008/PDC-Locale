@@ -8,19 +8,19 @@
   <Id>f7e2b655-0286-4b57-89c8-111111111111</Id>
 
   <Version>1.0.0.0</Version>
-  <ProviderName>MonAddin</ProviderName>
+  <ProviderName>PDC-Addin</ProviderName>
 
   <DefaultLocale>fr-FR</DefaultLocale>
 
-  <DisplayName DefaultValue="Mon Add-in"/>
-  <Description DefaultValue="Complément Office simple chargé depuis une page HTML."/>
+  <DisplayName DefaultValue="PDC Add-in"/>
+  <Description DefaultValue="Complément Office simple utilisant une page HTML GitHub Pages."/>
 
-  <!-- HOST = Excel -->
+  <!-- Limité à Excel -->
   <Hosts>
     <Host Name="Workbook"/>
   </Hosts>
 
-  <!-- La page HTML qui s’affichera dans le taskpane -->
+  <!-- La page HTML qui se charge dans le volet Office -->
   <DefaultSettings>
     <SourceLocation DefaultValue="https://ahme-diaby008.github.io/PDC-Locale/index.html"/>
   </DefaultSettings>
