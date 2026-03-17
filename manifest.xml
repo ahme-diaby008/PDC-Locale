@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <OfficeApp 
   xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
@@ -6,7 +7,9 @@
   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
   xsi:type="TaskPaneApp">
 
-  <Id>f7e2b655-0286-4e7e-b58a-bc81ab6012ac</Id>
+  <!-- NOUVEAU GUID -->
+  <Id>d7e06c8c-6ccb-4d9d-8bfb-91ee9afb443d</Id>
+
   <Version>1.0.0.0</Version>
   <ProviderName>PDC-Addin</ProviderName>
   <DefaultLocale>fr-FR</DefaultLocale>
@@ -29,21 +32,23 @@
 
   <Permissions>ReadWriteDocument</Permissions>
 
-  <VersionOverrides xsi:type="VersionOverridesV1_0"
-    xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides">
+  <VersionOverrides
+    xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+    xsi:type="VersionOverridesV1_0">
 
     <Hosts>
       <Host xsi:type="Workbook">
-
         <DesktopFormFactor>
 
           <FunctionFile resid="PDC.Commands.Url"/>
 
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
+
+            <!-- Onglet Accueil -->
             <OfficeTab id="TabHome">
-              <Group id="PDC.Group">
+              <Group id="PDC.Group.Home">
                 <Label resid="PDC.Group.Label"/>
-                <Control xsi:type="Button" id="PDC.OpenTaskpane">
+                <Control xsi:type="Button" id="PDC.OpenTaskpane.Home">
                   <Label resid="PDC.Button.Label"/>
                   <Supertip>
                     <Title resid="PDC.Button.Label"/>
@@ -61,10 +66,33 @@
                 </Control>
               </Group>
             </OfficeTab>
+
+            <!-- Onglet Insertion -->
+            <OfficeTab id="TabInsert">
+              <Group id="PDC.Group.Insert">
+                <Label resid="PDC.Group.Label"/>
+                <Control xsi:type="Button" id="PDC.OpenTaskpane.Insert">
+                  <Label resid="PDC.Button.Label"/>
+                  <Supertip>
+                    <Title resid="PDC.Button.Label"/>
+                    <Description resid="PDC.Button.Tooltip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PDC.Icon"/>
+                    <bt:Image size="32" resid="PDC.Icon"/>
+                    <bt:Image size="80" resid="PDC.Icon"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>PDC.Panel</TaskpaneId>
+                    <SourceLocation resid="PDC.Taskpane.Url"/>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+
           </ExtensionPoint>
 
         </DesktopFormFactor>
-
       </Host>
     </Hosts>
 
@@ -84,8 +112,9 @@
       </bt:ShortStrings>
 
       <bt:LongStrings>
-        <bt:String id="PDC.Button.Tooltip" DefaultValue="Ouvrir le PDC Add-in"/>
+        <bt:String id="PDC.Button.Tooltip" DefaultValue="Ouvrir le complément PDC"/>
       </bt:LongStrings>
+
     </Resources>
 
   </VersionOverrides>
