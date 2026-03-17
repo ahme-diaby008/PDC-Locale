@@ -8,7 +8,7 @@
   xsi:type="TaskPaneApp">
 
   <!-- NOUVEAU GUID -->
-  <Id>d7e06c8c-6ccb-4d9d-8bfb-91ee9afb443d</Id>
+  <Id>d05c8bbe-1f2b-40c0-91b4-a50d226af751/Id>
 
   <Version>1.0.0.0</Version>
   <ProviderName>PDC-Addin</ProviderName>
