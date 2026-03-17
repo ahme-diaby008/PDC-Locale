@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <OfficeApp 
-    xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:type="TaskPaneApp">
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+  xsi:type="TaskPaneApp">
 
   <Id>f7e2b655-0286-4b57-89c8-111111111111</Id>
   <Version>1.0.0.0</Version>
@@ -10,8 +12,9 @@
   <DefaultLocale>fr-FR</DefaultLocale>
 
   <DisplayName DefaultValue="PDC Add-in"/>
-  <Description DefaultValue="Complément Office simple – site statique."/>
-  
+  <Description DefaultValue="Complément Office – site statique Netlify."/>
+  <SupportUrl DefaultValue="https://product-data-collect.netlify.app"/>
+
   <AppDomains>
     <AppDomain>https://product-data-collect.netlify.app</AppDomain>
   </AppDomains>
@@ -25,4 +28,56 @@
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xsi:type="VersionOverridesV1_0" xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides">
+    <Hosts>
+      <Host xsi:type="Workbook">
+        <DesktopFormFactor>
+          <FunctionFile resid="Commands.Url"/>
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <OfficeTab id="TabHome">
+              <Group id="PDC.Group">
+                <Label resid="PDC.Group.Label"/>
+                <Control xsi:type="Button" id="PDC.TaskpaneButton">
+                  <Label resid="PDC.TaskpaneButton.Label"/>
+                  <Supertip>
+                    <Title resid="PDC.TaskpaneButton.Label"/>
+                    <Description resid="PDC.TaskpaneButton.Tooltip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PDC.Icon.16"/>
+                    <bt:Image size="32" resid="PDC.Icon.32"/>
+                    <bt:Image size="80" resid="PDC.Icon.80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <SourceLocation resid="PDC.Taskpane.Url"/>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <!-- Icônes facultatives : tu peux laisser les 3 sur la même URL -->
+        <bt:Image id="PDC.Icon.16" DefaultValue="https://product-data-collect.netlify.app/icon-32.png"/>
+        <bt:Image id="PDC.Icon.32" DefaultValue="https://product-data-collect.netlify.app/icon-32.png"/>
+        <bt:Image id="PDC.Icon.80" DefaultValue="https://product-data-collect.netlify.app/icon-80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Commands.Url" DefaultValue="https://product-data-collect.netlify.app/index.html"/>
+        <bt:Url id="PDC.Taskpane.Url" DefaultValue="https://product-data-collect.netlify.app/index.html"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="PDC.Group.Label" DefaultValue="PDC"/>
+        <bt:String id="PDC.TaskpaneButton.Label" DefaultValue="Ouvrir PDC"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="PDC.TaskpaneButton.Tooltip" DefaultValue="Ouvre le volet PDC"/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
 </OfficeApp>
