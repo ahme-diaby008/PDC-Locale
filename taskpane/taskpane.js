@@ -1,8 +1,9 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("myButton");
-  btn?.addEventListener("click", onClick);
+  if (!btn) { console.error("Bouton introuvable"); return; }
+  btn.addEventListener("click", onClick);
 });
+
 
 async function onClick() {
 
