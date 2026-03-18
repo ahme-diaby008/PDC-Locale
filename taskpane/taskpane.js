@@ -1,36 +1,24 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
-
-/* global console, document, Excel, Office */
-
-Office.onReady((info) => {
-  if (info.host === Office.HostType.Excel) {
-    document.getElementById("sideload-msg").style.display = "none";
-    document.getElementById("app-body").style.display = "flex";
-    document.getElementById("run").onclick = run;
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("myButton");
+  if (!btn) { console.error("Bouton introuvable"); return; }
+  btn.addEventListener("click", onClick);
 });
 
-export async function run() {
-  try {
-    await Excel.run(async (context) => {
-      /**
-       * Insert your Excel code here
-       */
-      const range = context.workbook.getSelectedRange();
 
-      // Read the range address
-      range.load("address");
+async function onClick() {
 
-      // Update the fill color
-      range.format.fill.color = "yellow";
+  await fetch("https://d5a9f7d36f6be56ba17119f83f77d6.a6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/8dac9218fabd4357aa5821373ba16569/triggers/manual/paths/invoke?api-version=1", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      event: "button_clicked",
+      page: "taskpane.html",
+      timestamp: new Date().toISOString()
+    })
+  });
 
-      await context.sync();
-      console.log(`The range address was ${range.address}.`);
-    });
-  } catch (error) {
-    console.error(error);
-  }
-}
+  alert("Flux déclenché !");
+});
+``
